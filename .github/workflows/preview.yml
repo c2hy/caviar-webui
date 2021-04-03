@@ -9,7 +9,7 @@ jobs:
       uses: actions/checkout@main
 
     - name: buildAndDeploy
-      uses: c2hy/caviar-webui-action@main
+      uses: JamesIves/github-pages-deploy-action@main
       env:
         ACCESS_TOKEN: ${{ secrets.deploy_token }}
         BRANCH: gh-pages
