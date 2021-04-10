@@ -3,9 +3,9 @@
     <v-navigation-drawer v-model="showNav" bottom app>
       <v-list nav dense>
         <v-subheader
-          v-clipboard="user.uid"
+          v-clipboard="user.userId"
           v-clipboard:success="onCopyUidSuccess"
-          >{{ user.nickName }} {{ user.uid }}</v-subheader
+          >{{ user.nickName }} {{ user.userId }}</v-subheader
         >
         <v-list-item-group v-model="currentNav">
           <v-list-item
@@ -34,11 +34,13 @@
     </v-app-bar>
 
     <v-main>
-      <Recent
-        v-if="navKey === 'recent'"
-        v-on:view="onViewFriendMoments"
-      ></Recent>
-      <Home v-if="navKey === 'home'"></Home>
+      <Recent v-if="navKey === 'recent'"></Recent>
+      <Home
+        :userId="user.userId"
+        :nickName="user.nickName"
+        :avatar="user.avatar"
+        v-if="navKey === 'home'"
+      ></Home>
       <Relationship v-if="navKey === 'relationship'"></Relationship>
       <PushMoment
         :show="pushMomentSheet"
@@ -48,11 +50,6 @@
         :show="addFriendSheet"
         v-on:close="addFriendSheet = false"
       ></AddFriend>
-      <FriendMoments
-        :show="viewFriendMoments"
-        :uid="viewFriendUid"
-        v-on:close="viewFriendMoments = false"
-      ></FriendMoments>
       <v-snackbar v-model="showSnackbar" timeout="700" light>
         {{ snackbarText }}
       </v-snackbar>
@@ -61,12 +58,12 @@
 </template>
 
 <script>
+import { currentUser } from "./api";
 import Recent from "./components/Recent";
 import Home from "./components/Home";
 import Relationship from "./components/Relationship";
 import PushMoment from "./components/PushMoment";
 import AddFriend from "./components/AddFriend";
-import FriendMoments from "./components/FriendMoments";
 
 export default {
   name: "App",
@@ -77,7 +74,6 @@ export default {
     Relationship,
     PushMoment,
     AddFriend,
-    FriendMoments,
   },
 
   data: () => ({
@@ -85,14 +81,9 @@ export default {
     currentNav: 0,
     pushMomentSheet: false,
     addFriendSheet: false,
-    viewFriendMoments: false,
-    viewFriendUid: "",
     showSnackbar: false,
     snackbarText: "",
-    user: {
-      nickName: "鱼子酱",
-      uid: "9H5K0",
-    },
+    user: {},
     navs: [
       { key: "recent", title: "近况", icon: "mdi-format-list-bulleted" },
       { key: "home", title: "主页", icon: "mdi-account-clock" },
@@ -109,13 +100,12 @@ export default {
   },
   methods: {
     onCopyUidSuccess: function () {
-      this.snackbarText = `已复制 ${this.user.uid} 到剪贴板`;
+      this.snackbarText = `已复制 ${this.user.userId} 到剪贴板`;
       this.showSnackbar = true;
     },
-    onViewFriendMoments: function (uid) {
-      this.viewFriendUid = uid;
-      this.viewFriendMoments = true;
-    },
+  },
+  async created() {
+    this.user = await currentUser();
   },
 };
 </script>

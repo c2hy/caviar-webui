@@ -1,0 +1,1 @@
+export const showDate = (date) => new Date(date).toLocaleString()
