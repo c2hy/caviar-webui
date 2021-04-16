@@ -75,6 +75,7 @@ import { showDate } from "../tools";
 
 export default {
   name: "Recent",
+  props: ["userId"],
 
   data: () => ({
     friends: [],

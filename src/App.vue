@@ -34,7 +34,10 @@
     </v-app-bar>
 
     <v-main>
-      <Recent v-if="navKey === 'recent'"></Recent>
+      <Recent
+        :userId="user.userId"
+        v-if="navKey === 'recent' && user.userId"
+      ></Recent>
       <Home
         :userId="user.userId"
         :nickName="user.nickName"

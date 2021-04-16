@@ -4,7 +4,7 @@ Axios.defaults.baseURL = '/api'
 Axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 export const currentUser = async () => {
-    return (await Axios.post("/current-user")).data
+    return (await Axios.post("/current-user", { userId: "100000" })).data
 }
 
 export const recent = async ({ userId }) => {
@@ -16,5 +16,5 @@ export const moments = async ({ userId }) => {
 }
 
 export const friends = async () => {
-    return (await Axios.post("/friends")).data
+    return (await Axios.post("/friends", { userId: "100000" })).data
 }
