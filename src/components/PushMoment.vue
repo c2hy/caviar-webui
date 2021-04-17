@@ -16,7 +16,7 @@
             clear-icon="mdi-close-circle"
             outlined
             rows="4"
-            :value="moment"
+            v-model="moment"
           ></v-textarea>
         </v-card-text>
 
@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import { newMoment } from "../api";
+
 export default {
   name: "PushMoment",
   props: ["show"],
@@ -40,7 +42,8 @@ export default {
     cancel: function () {
       this.$emit("close");
     },
-    push: function () {
+    push: async function () {
+      await newMoment({ content: this.moment });
       this.$emit("close");
     },
   },

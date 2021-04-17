@@ -16,7 +16,7 @@
             clear-icon="mdi-close-circle"
             outlined
             label="朋友的 ID"
-            value=""
+            v-model="friendId"
           ></v-text-field>
         </v-card-text>
         <v-card-actions>
@@ -29,15 +29,20 @@
 </template>
 
 <script>
+import { newFriend } from "../api";
+
 export default {
   name: "AddFriend",
   props: ["show"],
-  data: () => ({}),
+  data: () => ({
+    friendId: "",
+  }),
   methods: {
     cancel: function () {
       this.$emit("close");
     },
-    push: function () {
+    push: async function () {
+      await newFriend({ friendId: this.friendId });
       this.$emit("close");
     },
   },
