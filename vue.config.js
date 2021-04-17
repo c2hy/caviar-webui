@@ -2,7 +2,7 @@ module.exports = {
   transpileDependencies: [
     'vuetify'
   ],
-  publicPath: process.env.NODE_ENV === 'production' ? '/caviar-webui/' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
   devServer:{
     host:"localhost",
     port:"8080",
