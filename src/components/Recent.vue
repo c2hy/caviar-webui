@@ -88,7 +88,7 @@ export default {
       this.showingFriend = friend;
       this.showFriendDialog = true;
       this.showingFriendMoments = await friendMoments({
-        userId: friend.friendId,
+        friendId: friend.friendId,
       });
     },
   },
