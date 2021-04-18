@@ -16,6 +16,7 @@
             clear-icon="mdi-close-circle"
             outlined
             label="朋友的 ID"
+            :rules="[rules.required, rules.counter]"
             v-model="friendId"
           ></v-text-field>
         </v-card-text>
@@ -36,6 +37,10 @@ export default {
   props: ["show"],
   data: () => ({
     friendId: "",
+    rules: {
+      required: (value) => !!value || "需要输入用户 ID",
+      counter: value => (value.length >= 6) || '用户 ID 最低为 6 位',
+    },
   }),
   methods: {
     cancel: function () {

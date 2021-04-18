@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { recent, moments } from "../api";
+import { recent, friendMoments } from "../api";
 import { showDate } from "../tools";
 
 export default {
@@ -87,7 +87,9 @@ export default {
     showFriend: async function (friend) {
       this.showingFriend = friend;
       this.showFriendDialog = true;
-      this.showingFriendMoments = await moments({ userId: friend.userId });
+      this.showingFriendMoments = await friendMoments({
+        userId: friend.friendId,
+      });
     },
   },
   async created() {

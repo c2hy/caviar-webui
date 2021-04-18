@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { moments, removeMoment } from "../api";
+import { ownerMoments, removeMoment } from "../api";
 import { showDate } from "../tools";
 
 export default {
@@ -46,7 +46,7 @@ export default {
     },
   },
   async created() {
-    this.moments = await moments({ userId: this.userId });
+    this.moments = await ownerMoments({ userId: this.userId });
   },
   filters: {
     showDate,

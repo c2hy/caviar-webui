@@ -7,18 +7,14 @@
           v-clipboard:success="onCopyUidSuccess"
           >{{ user.nickName }} {{ user.userId }}</v-subheader
         >
-        <v-list-item-group v-model="currentNav">
-          <v-list-item
-            @click="showNav = false"
-            v-for="nav in navs"
-            :key="nav.key"
-          >
+        <template v-for="nav in navs">
+          <v-list-item @click="onNavChanged(nav.key)" :key="nav.key">
             <v-list-item-icon>
               <v-icon>{{ nav.icon }}</v-icon>
             </v-list-item-icon>
             <v-list-item-title>{{ nav.title }}</v-list-item-title>
           </v-list-item>
-        </v-list-item-group>
+        </template>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar dense app>
@@ -34,17 +30,23 @@
     </v-app-bar>
 
     <v-main>
+      <Login
+        :show="loginSheet"
+        v-if="currentNav === 'login'"
+        @succeed="onLoginSucceed"
+        @failed="onLoginFailed"
+      ></Login>
       <Recent
         :userId="user.userId"
-        v-if="navKey === 'recent' && user.userId"
+        v-if="currentNav === 'recent' && user.userId"
       ></Recent>
       <Home
         :userId="user.userId"
         :nickName="user.nickName"
         :avatar="user.avatar"
-        v-if="navKey === 'home'"
+        v-if="currentNav === 'home'"
       ></Home>
-      <Relationship v-if="navKey === 'relationship'"></Relationship>
+      <Relationship v-if="currentNav === 'relationship'"></Relationship>
       <PushMoment
         :show="pushMomentSheet"
         v-on:close="pushMomentSheet = false"
@@ -62,6 +64,7 @@
 
 <script>
 import { currentUser } from "./api";
+import Login from "./components/Login";
 import Recent from "./components/Recent";
 import Home from "./components/Home";
 import Relationship from "./components/Relationship";
@@ -72,6 +75,7 @@ export default {
   name: "App",
 
   components: {
+    Login,
     Recent,
     Home,
     Relationship,
@@ -81,7 +85,7 @@ export default {
 
   data: () => ({
     showNav: false,
-    currentNav: 0,
+    currentNav: "recent",
     pushMomentSheet: false,
     addFriendSheet: false,
     showSnackbar: false,
@@ -95,20 +99,36 @@ export default {
   }),
   computed: {
     navTitle: function () {
-      return this.navs[this.currentNav]["title"];
+      const nav = this.navs.find((v) => v.key === this.currentNav);
+      return nav ? nav.title : "";
     },
-    navKey: function () {
-      return this.navs[this.currentNav]["key"];
+    loginSheet: function () {
+      return this.currentNav === "login";
     },
   },
   methods: {
+    onNavChanged: function (navKey) {
+      this.currentNav = navKey;
+      this.showNav = false;
+    },
     onCopyUidSuccess: function () {
       this.snackbarText = `已复制 ${this.user.userId} 到剪贴板`;
       this.showSnackbar = true;
     },
+    onLoginSucceed: async function () {
+      this.currentNav = "recent";
+      this.user = await currentUser();
+    },
+    onLoginFailed: function () {},
   },
   async created() {
-    this.user = await currentUser();
+    try {
+      this.user = await currentUser();
+    } catch (error) {
+      if (error.response.status === 403) {
+        this.currentNav = "login";
+      }
+    }
   },
 };
 </script>
