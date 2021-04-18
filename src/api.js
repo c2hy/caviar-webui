@@ -35,8 +35,8 @@ export const removeMoment = async ({ momentId }) => {
     return (await Axios.post("/remove-moment", { momentId })).data
 }
 
-export const newFriend = async ({ friendId }) => {
-    return (await Axios.post("/new-friend", { friendId })).data
+export const newFriend = async ({ friendUserId }) => {
+    return (await Axios.post("/new-friend", { friendUserId })).data
 }
 
 export const removeFriend = async ({ friendId }) => {

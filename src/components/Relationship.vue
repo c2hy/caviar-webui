@@ -9,7 +9,7 @@
           <v-list-item-content>
             <v-list-item-title>{{ item.nickName }}</v-list-item-title>
           </v-list-item-content>
-          <v-list-item-action @click="removeFriend(item.userId)">
+          <v-list-item-action @click="removeFriend(item.friendId)">
             <v-icon> mdi-account-multiple-remove </v-icon>
           </v-list-item-action>
         </v-list-item>
@@ -28,9 +28,9 @@ export default {
     friends: [],
   }),
   methods: {
-    removeFriend: async function (userId) {
-      await removeFriend({ friendId: userId });
-      this.friends = this.friends.filter((v) => v.userId !== userId);
+    removeFriend: async function (friendId) {
+      await removeFriend({ friendId: friendId });
+      this.friends = this.friends.filter((v) => v.friendId !== friendId);
     },
   },
   async created() {

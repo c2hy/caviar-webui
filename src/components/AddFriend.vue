@@ -17,7 +17,7 @@
             outlined
             label="朋友的 ID"
             :rules="[rules.required, rules.counter]"
-            v-model="friendId"
+            v-model="friendUserId"
           ></v-text-field>
         </v-card-text>
         <v-card-actions>
@@ -36,7 +36,7 @@ export default {
   name: "AddFriend",
   props: ["show"],
   data: () => ({
-    friendId: "",
+    friendUserId: "",
     rules: {
       required: (value) => !!value || "需要输入用户 ID",
       counter: value => (value.length >= 6) || '用户 ID 最低为 6 位',
@@ -47,7 +47,7 @@ export default {
       this.$emit("close");
     },
     push: async function () {
-      await newFriend({ friendId: this.friendId });
+      await newFriend({ friendUserId: this.friendUserId });
       this.$emit("close");
     },
   },
