@@ -19,8 +19,8 @@ export const ownerMoments = async () => {
     return (await Axios.post("/owner-moments")).data
 }
 
-export const friendMoments = async () => {
-    return (await Axios.post("/friend-moments")).data
+export const friendMoments = async ({ friendId }) => {
+    return (await Axios.post("/friend-moments", { friendId })).data
 }
 
 export const friends = async () => {
