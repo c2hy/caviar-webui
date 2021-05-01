@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="showNav" bottom app>
+    <v-navigation-drawer v-model="showNav" app>
       <v-list nav dense>
         <v-subheader
           v-clipboard="user.userId"
